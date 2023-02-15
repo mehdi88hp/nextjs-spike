@@ -1,17 +1,12 @@
 import React from 'react';
 import App, { AppContext } from 'next/app';
-import { Provider } from 'react-redux';
-import store from '../store';
+import { wrapper } from '../store';
 import NavBar from '../components/Navbar';
 import useUser from '../lib/useUser'
-import { useSelector, useDispatch } from 'react-redux'
+import Layout from '../layouts/MainLayout'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getCookies, getCookie, setCookies, removeCookies } from 'cookies-next';
 import * as cookie from 'cookie'
-import { wrapper } from '../store';
-
-// import { cookies } from 'next/headers';
 
 interface Props {
   store: any;
@@ -102,10 +97,9 @@ class MyApp extends App<Props> {
     const {Component, pageProps} = this.props;
 
     return (
-      <>
-        <NavBar/>
+      <Layout>
         <Component {...pageProps} />
-      </>
+      </Layout>
     );
   }
 }

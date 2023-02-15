@@ -1,0 +1,113 @@
+import React from 'react';
+import App, { AppContext } from 'next/app';
+import { Provider } from 'react-redux';
+import store from '../store';
+import NavBar from '../components/Navbar';
+import useUser from '../lib/useUser'
+import { useSelector, useDispatch } from 'react-redux'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { getCookies, getCookie, setCookies, removeCookies } from 'cookies-next';
+import * as cookie from 'cookie'
+import { wrapper } from '../store';
+
+// import { cookies } from 'next/headers';
+
+interface Props {
+  store: any;
+}
+
+class MyApp extends App<Props> {
+
+  public static getInitialProps = wrapper.getInitialAppProps(store => async context => {
+
+    const {Component, ctx}: AppContext = context
+
+
+    // store.dispatch({type: 'TOE', payload: 'was set in _app'});
+    //
+    // return {
+    //   pageProps: {
+    //     // https://nextjs.org/docs/advanced-features/custom-app#caveats
+    //     ...(await App.getInitialProps(context)).pageProps,
+    //     // Some custom thing for all pages
+    //     pathname: ctx.pathname,
+    //   },
+    // };
+
+
+    let pageProps = {};
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+    // const dispatch = (await import('../store')).default.dispatch;
+    // console.log(store)
+    // const dispatch = store.dispatch;
+
+    // console.log(store)
+    // console.log(Object.keys(ctx))
+    // if (ctx.store) {
+    //
+    // }
+
+    if (ctx.req) {
+      const parsedCookies = cookie.parse(ctx.req.headers.cookie);
+
+      await useUser(parsedCookies.passport_cookie).then(async data => {
+        const slice = await import('../store/auth/authSlice')
+
+        store.dispatch(slice.setUser(data.user))
+
+        console.log(333, data.user, 999)
+      });
+    }
+
+    return {pageProps};
+
+
+  });
+
+
+  static async qgetInitialProps({Component, ctx, store}: AppContext) {
+    let pageProps = {};
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+    const dispatch = (await import('../store')).default.dispatch;
+
+    console.log(store)
+    // console.log(Object.keys(ctx))
+    // if (ctx.store) {
+    //
+    // }
+
+    if (ctx.req) {
+      const parsedCookies = cookie.parse(ctx.req.headers.cookie);
+
+      await useUser(parsedCookies.passport_cookie).then(async data => {
+        const slice = await import('../store/auth/authSlice')
+
+        dispatch(slice.setUser(data.user))
+
+        console.log(333, data.user, 999)
+      });
+    }
+
+    return {pageProps};
+  }
+
+  render() {
+    const {Component, pageProps} = this.props;
+
+    return (
+      <>
+        <NavBar/>
+        <Component {...pageProps} />
+      </>
+    );
+  }
+}
+
+export default wrapper.withRedux(MyApp);

@@ -19,11 +19,10 @@ function RTL(props) {
 }
 
 const MainLayout = (props) => (
-  <RTL>
+  // <RTL>
     <ThemeProvider theme={theme}>
       {props.children}
     </ThemeProvider>
-  </RTL>
 );
 
 export default MainLayout;

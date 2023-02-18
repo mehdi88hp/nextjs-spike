@@ -47,51 +47,21 @@ class MyApp extends App<Props> {
     // }
 
     if (ctx.req) {
-      const parsedCookies = cookie.parse(ctx.req.headers.cookie);
+      // const parsedCookies = cookie.parse(ctx.req.headers.cookie);
 
-      await useUser(parsedCookies.passport_cookie).then(async data => {
-        const slice = await import('../store/auth/authSlice')
-
-        store.dispatch(slice.setUser(data.user))
-
-        console.log(333, data.user, 999)
-      });
+      // await useUser(parsedCookies.passport_cookie).then(async data => {
+      //   const slice = await import('../store/auth/authSlice')
+      //
+      //   store.dispatch(slice.setUser(data.user))
+      //
+      //   console.log(333, data.user, 999)
+      // });
     }
 
     return {pageProps};
 
 
   });
-
-
-  static async qgetInitialProps({Component, ctx, store}: AppContext) {
-    let pageProps = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-    const dispatch = (await import('../store')).default.dispatch;
-
-    console.log(store)
-    // console.log(Object.keys(ctx))
-    // if (ctx.store) {
-    //
-    // }
-
-    if (ctx.req) {
-      const parsedCookies = cookie.parse(ctx.req.headers.cookie);
-
-      await useUser(parsedCookies.passport_cookie).then(async data => {
-        const slice = await import('../store/auth/authSlice')
-
-        dispatch(slice.setUser(data.user))
-
-        console.log(333, data.user, 999)
-      });
-    }
-
-    return {pageProps};
-  }
 
   render() {
     const {Component, pageProps} = this.props;

@@ -26,7 +26,8 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico"/>
       </Head>
 
-      <main>
+      <main className={'test123'}>
+
         <h1 className={styles.title}>
           Welcome to Home!
         </h1>

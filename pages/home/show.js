@@ -26,6 +26,12 @@ const Home = () => {
   const dispatch = useDispatch();
 
   console.log('authState', authState)
+
+  const selectRowProp = {
+    mode: "checkbox",
+    clickToSelect: true,
+    bgColor: "rgb(238, 193, 213)"
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -34,7 +40,7 @@ const Home = () => {
       </Head>
 
       <main>
-        <h1 className={styles.title}>
+        <h1 className={'my-2'}>
           Home! id is <b>{router.query.id}</b>
         </h1>
         {/*<h2>{authState}</h2>*/}

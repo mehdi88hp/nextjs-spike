@@ -21,6 +21,9 @@ import { mainListItems, secondaryListItems } from '../../components/listItems';
 import Chart from '../../components/Chart';
 import Deposits from '../../components/Dposits';
 import Orders from '../../components/Orders';
+import '@mui/material/styles';
+// import { ButtonUnstyled as Button } from "@mui/base";
+import { Button } from "@mui/material";
 
 function Copyright(props: any) {
   return (
@@ -95,9 +98,9 @@ function DashboardContent() {
 
   return (
     // <ThemeProvider theme={mdTheme}>
-    <Box sx={{display: 'flex'}} dir="rtl">
+    <Box sx={{display: 'flex', m: -2}}>
       <CssBaseline/>
-      <AppBar position="absolute" open={open} dir="rtl">
+      <AppBar position="absolute" open={open}>
         <Toolbar
           sx={{
             pr: '24px', // keep right padding when drawer closed
@@ -131,7 +134,7 @@ function DashboardContent() {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open} dir="rtl">
+      <Drawer variant="permanent" open={open}>
         <Toolbar
           sx={{
             display: 'flex',
@@ -176,6 +179,10 @@ function DashboardContent() {
                   height: 240,
                 }}
               >
+                <Button className={"btn btn-primary"}>test button</Button>
+
+                <h1 className={'my-5'}>TEST</h1>
+
                 <Chart/>
               </Paper>
             </Grid>

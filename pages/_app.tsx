@@ -1,12 +1,13 @@
 import React from 'react';
 import App, { AppContext } from 'next/app';
 import { wrapper } from '../store';
-import NavBar from '../components/Navbar';
-import useUser from '../lib/useUser'
 import Layout from '../layouts/MainLayout'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import * as cookie from 'cookie'
+import { StyledEngineProvider } from "@mui/material/styles";
+
+// import '../styles/parent.scss'
+// import '../styles/test.scss'
 
 interface Props {
   store: any;
@@ -67,9 +68,11 @@ class MyApp extends App<Props> {
     const {Component, pageProps} = this.props;
 
     return (
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <StyledEngineProvider injectFirst>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </StyledEngineProvider>
     );
   }
 }

@@ -4,10 +4,10 @@ const rewrites = async () => {
     //   source: '/about',
     //   destination: '/home',
     // },
-    // {
-    //   source: '/home/:id',
-    //   destination: '/home/show',
-    // },
+    {
+      source: '/home/:id',
+      destination: '/home/show',
+    },
   ]
 }
 

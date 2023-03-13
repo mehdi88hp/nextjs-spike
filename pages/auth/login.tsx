@@ -17,6 +17,11 @@ import validator from "../../lib/validations";
 import axios from "axios";
 import getConfig from 'next/config'
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import useUser from "../../lib/useUser";
+import { selectAuthState, setUser } from "../../store/auth/authSlice";
+import { log } from "util";
+import Router from "next/router";
 
 
 function Copyright(props: any) {
@@ -70,12 +75,33 @@ export default function Login() {
     }).then(async response => {
       localStorage.setItem('jwt', response.data.access_token);
 
-      const slice = await import('../../store/auth/authSlice')
+      dispatch(setUser(response.data.user))
 
-      dispatch(slice.setUser(response.data.user))
+      Router.push({
+        pathname: '/auth/profile',
+      })
 
     }).catch(err => console.log(err))
   }
+
+  // if (!process.server) {
+
+  useEffect(() => {
+    useUser().then(({user}) => {
+      console.log(123123, user);
+      if (user && user.email) {
+        Router.push({
+          pathname: '/auth/profile',
+          // query: { name: 'Someone' }
+        })
+      }
+      dispatch(setUser(user))
+
+      console.log(123231, user)
+    }).catch(err => console.log(err))
+
+  }, [])
+  // }
 
   return (
     <ThemeProvider theme={theme}>

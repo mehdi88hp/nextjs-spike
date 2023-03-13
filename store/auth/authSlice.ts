@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { HYDRATE } from "next-redux-wrapper";
 import { AppState } from "../../store";
+import useUser from "../../lib/useUser";
+import { AnyAction, Dispatch } from "redux";
 
 export interface UserState {
   id: number
@@ -14,6 +16,19 @@ export interface AuthState {
 
 const initialState: AuthState = {}
 
+// First, create the thunk
+export const fetchUserByJwt = createAsyncThunk(
+  'users/fetchUserByJwt',
+  async () => {
+    // const response = await userAPI.fetchById(userId)
+    const response = await useUser()
+    // console.log(22222222222, response.user, 885888)
+
+
+    return response.user
+  }
+) as any
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -23,13 +38,28 @@ export const authSlice = createSlice({
     },
   },
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
+  /*  extraReducers: {
+      [HYDRATE]: (state, action) => {
+        return {
+          ...state,
+          ...action.payload.auth,
+        };
+      },
+    },*/
+  extraReducers: (builder) => {
+    builder.addCase((state, action) => {
       return {
         ...state,
         ...action.payload.auth,
       };
-    },
+    })
+
+
+    builder.addCase(fetchUserByJwt.fulfilled, (state, action) => {
+      console.log('builder.addCase(fetchUserByJwt.fulfilled')
+      // Add user to the state array
+      state.user = action.payload
+    })
   }
 
 })

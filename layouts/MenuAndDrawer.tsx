@@ -19,6 +19,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useState } from "react";
+// import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -79,12 +81,17 @@ export default function PersistentDrawerLeft(props) {
   const [menuItems, setMenuItems] = React.useState([
     {
       name: 'Profile',
-      route: '/users/profile',
+      route: '/auth/profile',
       icon: <InboxIcon/>
     },
     {
+      name: 'users',
+      route: '/users',
+      icon: <MailIcon/>
+    },
+      {
       name: 'Test',
-      route: '/users/test',
+      route: '/dashboard',
       icon: <MailIcon/>
     },
   ])
@@ -150,14 +157,16 @@ export default function PersistentDrawerLeft(props) {
         <Divider/>
         <List>
           {menuItems.map((menu, index) => (
-            <ListItem key={menu.name} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {menu.icon}
-                </ListItemIcon>
-                <ListItemText primary={menu.name}/>
-              </ListItemButton>
-            </ListItem>
+              <Link href={menu.route} passHref key={menu.name}>
+                <ListItem key={menu.name} disablePadding >
+                  <ListItemButton>
+                    <ListItemIcon>
+                      {menu.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={menu.name}/>
+                  </ListItemButton>
+                </ListItem>
+              </Link>
           ))}
         </List>
       </Drawer>

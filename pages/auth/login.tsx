@@ -22,6 +22,7 @@ import useUser from "../../lib/useUser";
 import { selectAuthState, setUser } from "../../store/auth/authSlice";
 import { log } from "util";
 import Router from "next/router";
+import { useAuthOnFront } from "../../lib/useAuthOnFront";
 
 
 function Copyright(props: any) {
@@ -41,8 +42,9 @@ const theme = createTheme();
 
 export default function Login() {
   const dispatch = useDispatch();
+  const userState = useAuthOnFront();
 
-  const {handleSubmit, handleInput, handleHelperText, handleBlur, setForm, form} = formValidation({
+  const {handleInput, handleHelperText, handleBlur, setForm, form} = formValidation({
       email: {
         validations() {
           return [
@@ -60,7 +62,7 @@ export default function Login() {
         },
       },
     } as Record<string, stateType>,
-    {endpoint: '/users/signin'}
+    // {endpoint: '/users/signin'}
   );
 
   function handleLogin(event) {
@@ -72,6 +74,8 @@ export default function Login() {
     axios.post(getConfig().publicRuntimeConfig.authApi + '/users/jwtSignIn', {
       email: form.email.value,
       password: form.password.value,
+    }, {
+      withCredentials: true
     }).then(async response => {
       localStorage.setItem('jwt', response.data.access_token);
 
@@ -88,7 +92,6 @@ export default function Login() {
 
   useEffect(() => {
     useUser().then(({user}) => {
-      console.log(123123, user);
       if (user && user.email) {
         Router.push({
           pathname: '/auth/profile',
@@ -171,7 +174,7 @@ export default function Login() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/auth/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

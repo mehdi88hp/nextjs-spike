@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4102",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start -p 4102"
+    "start": "next start -p 3001"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -11,7 +11,9 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.9",
+    "@mui/x-data-grid": "^6.0.2",
     "@reduxjs/toolkit": "^1.9.2",
+    "@types/react-router-dom": "^5.3.3",
     "axios": "^1.3.3",
     "bootstrap": "^5.2.3",
     "cookies-next": "^2.1.1",
@@ -22,6 +24,7 @@
     "react": "^18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
+    "react-router-dom": "^6.9.0",
     "recharts": "^2.4.1",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",

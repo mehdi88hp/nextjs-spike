@@ -7,7 +7,11 @@ import { AnyAction, Dispatch } from "redux";
 
 export interface UserState {
   id: number
-  name: string
+  firstName: string
+  lastName: string
+  country: string
+  age: string
+  email: string
 }
 
 export interface AuthState {
@@ -19,10 +23,10 @@ const initialState: AuthState = {}
 // First, create the thunk
 export const fetchUserByJwt = createAsyncThunk(
   'users/fetchUserByJwt',
-  async () => {
+  async (payload) => {
     // const response = await userAPI.fetchById(userId)
-    const response = await useUser()
-    // console.log(22222222222, response.user, 885888)
+
+    const response = await useUser(payload)
 
 
     return response.user

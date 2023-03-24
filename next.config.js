@@ -15,7 +15,7 @@ const nextConfig = {
   },
   serverRuntimeConfig: {
     // Will only be available on the server side
-    authApi: process.env.AUTH_API || 'http://admin.last6.local',
+    authApi: process.env.AUTH_API_SERVER || 'http://admin.last6.local',
     mySecret: 'secret',
     secondSecret: process.env.SECOND_SECRET, // Pass through env variables
   },

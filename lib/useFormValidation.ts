@@ -8,13 +8,12 @@ export interface stateType {
   validations: () => Array<string | boolean>,
 }
 
-export type formOptions = {
-  endpoint: string;
-}
+// export type formOptions = {
+//   endpoint: string;
+// }
 
 export default (
   initialState: Record<string, stateType>,
-  formOptions: formOptions
 ) => {
   for (let key in initialState) {
     if (initialState[key].value == undefined) {
@@ -30,6 +29,14 @@ export default (
 
   const [form, setForm] = useState(initialState);
 
+  const initialFormValues = (userState)=>{
+    if(userState)
+      for (let key in form) {
+        console.log('key',key,form)
+        form[key].value = userState[key] ?? ''
+      }
+  }
+
   const handleInput = function (event, type) {
     const item = form[type]
     item.value = event.target.value
@@ -40,7 +47,7 @@ export default (
     item.hasError = validations.filter(Boolean).length > 0;
 
     item.showError = false;
-
+    console.log({[type]: item})
     setForm({...form, [type]: item})
   }
 
@@ -61,6 +68,7 @@ export default (
 
   return {
     initialState,
+    initialFormValues,
     form,
     setForm,
     handleInput,

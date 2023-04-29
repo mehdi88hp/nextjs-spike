@@ -24,25 +24,11 @@ import { log } from "util";
 import Router from "next/router";
 import { useAuthOnFront } from "../../lib/useAuthOnFront";
 
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const theme = createTheme();
+// const theme = createTheme();
 
 export default function Login() {
   const dispatch = useDispatch();
-  const userState = useAuthOnFront();
+  // const userState = useAuthOnFront();
 
   const {handleInput, handleHelperText, handleBlur, setForm, form} = formValidation({
       email: {
@@ -88,14 +74,11 @@ export default function Login() {
     }).catch(err => console.log(err))
   }
 
-  // if (!process.server) {
-
   useEffect(() => {
     useUser().then(({user}) => {
       if (user && user.email) {
         Router.push({
           pathname: '/auth/profile',
-          // query: { name: 'Someone' }
         })
       }
       dispatch(setUser(user))
@@ -104,10 +87,9 @@ export default function Login() {
     }).catch(err => console.log(err))
 
   }, [])
-  // }
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <Container component="main" maxWidth="xs">
         <CssBaseline/>
         <Box
@@ -181,7 +163,6 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{mt: 8, mb: 4}}/>
       </Container>
     </ThemeProvider>
   );

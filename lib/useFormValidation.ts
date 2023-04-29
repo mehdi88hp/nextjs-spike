@@ -29,10 +29,9 @@ export default (
 
   const [form, setForm] = useState(initialState);
 
-  const initialFormValues = (userState)=>{
-    if(userState)
+  const initialFormValues = (userState) => {
+    if (userState)
       for (let key in form) {
-        console.log('key',key,form)
         form[key].value = userState[key] ?? ''
       }
   }
@@ -66,6 +65,18 @@ export default (
     return form[type].validations().filter(Boolean).join(',')
   }
 
+  const triggerErrors = function (form) {
+    for (let key in form) {
+      let validations = initialState[key].validations()
+
+      form[key].hasError = validations.filter(Boolean).length > 0;
+    }
+
+    setForm({...form})
+
+    return form
+  }
+
   return {
     initialState,
     initialFormValues,
@@ -73,6 +84,7 @@ export default (
     setForm,
     handleInput,
     handleBlur,
-    handleHelperText
+    handleHelperText,
+    triggerErrors,
   }
 }

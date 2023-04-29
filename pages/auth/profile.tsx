@@ -40,7 +40,7 @@ export default function Profile(props) {
 //   return <></>
 // }
 
-  const {handleInput, handleHelperText, handleBlur, setForm, form} = formValidation({
+  const {handleInput, handleHelperText, handleBlur, setForm, form, triggerErrors} = formValidation({
     firstName: {
       value: userState ? userState.firstName : '',
       validations() {
@@ -64,7 +64,7 @@ export default function Profile(props) {
       validations() {
         return [
           validator.required(this.value) ? null : 'this field is required',
-          validator.minLength(this.value, 3) ? null : 'minimum length is 1',
+          validator.isInteger(this.value) ? null : ' this field needs to be a number',
         ]
       }
     },
@@ -128,13 +128,13 @@ export default function Profile(props) {
       console.log(response)
       if (response.data.status === true) {
         alert('ok')
-        // Router.push({
-        //   pathname: '/auth/login',
-        // })
       }
     });
   };
 
+  React.useEffect(() => {
+    triggerErrors(form)
+  }, []);
 
   return (
     // <ThemeProvider theme={theme}>
@@ -152,7 +152,7 @@ export default function Profile(props) {
           <PersonIcon/>
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Save profile
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
           <Grid container spacing={2}>
@@ -247,7 +247,7 @@ export default function Profile(props) {
             sx={{mt: 3, mb: 2}}
             disabled={Object.values(form).map(item => item.hasError).filter(Boolean).length > 0}
           >
-            Sign Up
+            Save
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
@@ -282,10 +282,16 @@ export default function Profile(props) {
 //   }
 
 export const getServerSideProps = wrapper.getServerSideProps((store => async ({req, res, ...etc}) => {
-  // console.log('2. Page.getServerSideProps uses the store to dispatch things');
-
   const response = await useUser({req}).catch(err => console.log(err))
 
+  if (!response) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    }
+  }
   const user = response.user
   return {
     props: {

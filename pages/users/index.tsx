@@ -4,9 +4,16 @@ import axios from "axios";
 import getConfig from "next/config";
 import { GetServerSidePropsCallback } from "next-redux-wrapper";
 import { wrapper } from "store";
+import Link from 'next/link';
+
 
 const columns: GridColDef[] = [
-  {field: 'id', headerName: 'ID', width: 70},
+  {
+    field: 'id', headerName: 'ID', width: 70,
+    renderCell: (params) => (
+      <Link href={'/users/' + params.row.id} passHref>${params.row.id}</Link>
+    )
+  },
   {field: 'firstName', headerName: 'First name', width: 130},
   {field: 'lastName', headerName: 'Last name', width: 130},
   {
